@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,8 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::orderBy('id', 'desc')->paginate(10);
-        return view('task.index', compact('tasks'));
+        $categories = Category::all();
+        return view('task.index', compact('tasks', 'categories'));
     }
 
     /**
@@ -21,7 +23,8 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return view('task.index');
+        $categories = Category::all();
+        return view('task.index', compact('categories'));
     }
 
     /**
@@ -31,6 +34,7 @@ class TaskController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required',
+            'category_id' => 'required',
             'description' => 'required',
             'status' => 'required',
         ]);
@@ -54,7 +58,8 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        return view('task.edit', compact('task'));
+        $categories = Category::all();
+        return view('task.edit', compact('task', 'categories'));
     }
 
     /**
@@ -64,6 +69,7 @@ class TaskController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required',
+            'category_id' => 'required',
             'description' => 'required',
             'status' => 'required',
         ]);

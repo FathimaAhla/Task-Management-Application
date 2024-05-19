@@ -32,6 +32,7 @@
                             <th>Task ID</th>
                             <th>Title</th>
                             <th>Category</th>
+                            <th>Description</th>
                             <th>Status</th>
                             <th>Created At</th>
                             <th>Actions</th>
@@ -42,6 +43,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $task->title }}</td>
+                                <td>{{ $task->category_id }}</td>
                                 <td>{{ $task->description }}</td>
                                 <td>{{ $task->status }}</td>
                                 <td>{{ $task->created_at->format('Y-m-d') }}</td>
@@ -79,28 +81,33 @@
                             @csrf
                             <div class="form-group">
                                 <label for="title">Title:</label>
-                                <input type="text" class="form-control" id="title" name="title"
-                                    value="{{ old('title') }}" placeholder="Enter title" required>
+                                <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" placeholder="Enter title" required>
                             </div>
                             <div class="form-group">
                                 <label for="description">Description:</label>
                                 <textarea class="form-control" id="description" name="description" placeholder="Enter description" required>{{ old('description') }}</textarea>
                             </div>
                             <div class="form-group">
-                                <label for="taskStatus">Status:</label>
-                                <select class="form-control" id="taskStatus" name="status" required>
-                                    <option>Select Status</option>
+                                <label for="category_id">Category:</label>
+                                <select class="form-control" id="category_id" name="category_id" required>
+                                    <option value="">Select Category</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="status">Status:</label>
+                                <select class="form-control" id="status" name="status" required>
+                                    <option value="">Select Status</option>
                                     <option value="to-do">To-Do</option>
                                     <option value="in-progress">In Progress</option>
                                     <option value="done">Done</option>
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-success">Create Task</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <a href="{{ route('tasks.index') }}" class="btn btn-secondary">Cancel</a>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>

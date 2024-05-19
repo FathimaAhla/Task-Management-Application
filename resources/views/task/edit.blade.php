@@ -31,6 +31,16 @@
                 <textarea class="form-control" id="editDescription" name="description" required>{{ old('description', $task->description) }}</textarea>
             </div>
             <div class="form-group">
+                <label for="category_id">Category:</label>
+                <select class="form-control" id="category_id" name="category_id" required>
+                    <option value="">{{ optional($task->category)->name }}</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="editTaskStatus">Status:</label>
                 <select class="form-control" id="editTaskStatus" name="status" required>
                     <option value="to-do" {{ old('status', $task->status) == 'to-do' ? 'selected' : '' }}>To-Do
