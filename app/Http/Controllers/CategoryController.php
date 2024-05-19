@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -12,8 +13,16 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::orderBy('id', 'desc')->paginate(10);
-        return view('category.index', compact('categories'));
+        if(Auth::id()){
+            $role = Auth::user()->role;
+            if($role == 'admin'){
+                $categories = Category::orderBy('id', 'desc')->paginate(10);
+                return view('category.index', compact('categories'));
+            }else{
+                $categories = Category::where('user_id', Auth::id())->orderBy('id', 'desc')->paginate(10);
+                return view('category.index', compact('categories'));
+            }
+        }
     }
 
     /**

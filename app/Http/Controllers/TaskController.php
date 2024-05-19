@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -13,9 +14,18 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::orderBy('id', 'desc')->paginate(10);
-        $categories = Category::all();
-        return view('task.index', compact('tasks', 'categories'));
+        if(Auth::id()){
+            $role = Auth::user()->role;
+            if($role == 'admin'){
+                $tasks = Task::orderBy('id', 'desc')->paginate(10);
+                $categories = Category::all();
+                return view('task.index', compact('tasks', 'categories'));
+            }else{
+                $tasks = Task::where('user_id', Auth::id())->orderBy('id', 'desc')->paginate(10);
+                $categories = Category::all();
+                return view('task.index', compact('tasks', 'categories'));
+            }
+        }
     }
 
     /**
