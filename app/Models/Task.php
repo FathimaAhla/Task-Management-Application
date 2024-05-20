@@ -14,11 +14,17 @@ class Task extends Model
         'title',
         'description',
         'category_id',
+        'user_id',
         'status'
     ];
 
-    public function category() : BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'task_category_id');
+        return $this->belongsTo(User::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 }
