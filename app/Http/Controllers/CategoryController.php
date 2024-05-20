@@ -13,16 +13,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        if(Auth::id()){
-            $role = Auth::user()->role;
-            if($role == 'admin'){
-                $categories = Category::orderBy('id', 'desc')->paginate(10);
-                return view('category.index', compact('categories'));
-            }else{
-                $categories = Category::where('user_id', Auth::id())->orderBy('id', 'desc')->paginate(10);
-                return view('category.index', compact('categories'));
-            }
-        }
+        $categories = Category::orderBy('id', 'desc')->paginate(10);
+        return view('category.index', compact('categories'));
     }
 
     /**
