@@ -14,6 +14,21 @@
 </head>
 
 <body>
+    <!-- Navbar -->
+
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+
+                    <a class="nav-item nav-link active" href="{{ route('tasks.index') }}">Task</a>
+                    <a class="nav-item nav-link" href="{{ route('categories.index') }}">Category</a>
+
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar -->
     <div class="container">
         <h2>Edit Task</h2>
         <a href="{{ route('tasks.index') }}" type="button" class="btn btn-success mb-2">Back</a>
@@ -45,7 +60,8 @@
                 <select class="form-control" id="editTaskStatus" name="status" required>
                     <option value="to-do" {{ old('status', $task->status) == 'to-do' ? 'selected' : '' }}>To-Do
                     </option>
-                    <option value="in-progress" {{ old('status', $task->status) == 'in-progress' ? 'selected' : '' }}>In
+                    <option value="in-progress" {{ old('status', $task->status) == 'in-progress' ? 'selected' : '' }}>
+                        In
                         Progress</option>
                     <option value="done" {{ old('status', $task->status) == 'done' ? 'selected' : '' }}>Done</option>
                 </select>

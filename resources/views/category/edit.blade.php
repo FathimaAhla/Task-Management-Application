@@ -14,6 +14,22 @@
 </head>
 
 <body>
+    <!-- Navbar -->
+
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+
+                    <a class="nav-item nav-link active" href="{{ route('tasks.index') }}">Task</a>
+                    <a class="nav-item nav-link" href="{{ route('categories.index') }}">Category</a>
+
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar -->
+
     <div class="container">
         <h2>Edit Category</h2>
         <a href="{{ route('categories.index') }}" type="button" class="btn btn-success mb-2">Back</a>
