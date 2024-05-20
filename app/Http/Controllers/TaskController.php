@@ -12,21 +12,66 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        if(Auth::id()){
+        if (Auth::id()) {
             $role = Auth::user()->role;
-            if($role == 'admin'){
-                $tasks = Task::orderBy('id', 'desc')->paginate(10);
+
+            if ($role == 'user') {
+
+                $category_id = $request->get('category_id');
+                $status = $request->get('status');
+                $sort_by = $request->get('sort_by', 'created_at');
+                $sort_order = $request->get('sort_order', 'desc');
+
+                $query = Task::query();
+
+                if ($role == 'user') {
+                    $query->where('user_id', Auth::id());
+                }
+
+                if ($category_id) {
+                    $query->where('category_id', $category_id);
+                }
+
+                if ($status) {
+                    $query->where('status', $status);
+                }
+
+                $query->orderBy($sort_by, $sort_order);
+
+                $tasks = $query->paginate(10);
                 $categories = Category::all();
+
                 return view('task.index', compact('tasks', 'categories'));
-            }else{
-                $tasks = Task::where('user_id', Auth::id())->orderBy('id', 'desc')->paginate(10);
+
+            } elseif ($role == 'admin') {
+
+                $category_id = $request->get('category_id');
+                $status = $request->get('status');
+                $sort_by = $request->get('sort_by', 'created_at');
+                $sort_order = $request->get('sort_order', 'desc');
+
+                $query = Task::query();
+
+                if ($category_id) {
+                    $query->where('category_id', $category_id);
+                }
+
+                if ($status) {
+                    $query->where('status', $status);
+                }
+
+                $query->orderBy($sort_by, $sort_order);
+
+                $tasks = $query->paginate(10);
                 $categories = Category::all();
+
                 return view('task.index', compact('tasks', 'categories'));
             }
         }
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -48,6 +93,8 @@ class TaskController extends Controller
             'description' => 'required',
             'status' => 'required',
         ]);
+
+        $validated['user_id'] = Auth::id(); // Add the authenticated user's ID
 
         Task::create($validated);
 

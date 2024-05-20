@@ -33,13 +33,55 @@
         </nav>
     </div>
     <!-- Navbar -->
-    
+
     <div class="container">
 
         <h2>Task List</h2>
         <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#createTaskModal">
             Create Task
         </button>
+
+        <!-- Filter and Sort Form -->
+        <form method="GET" action="{{ route('tasks.index') }}" class="form-inline mb-3">
+            <div class="form-group mr-2">
+                <label for="category_id" class="mr-2">Category:</label>
+                <select class="form-control" id="category_id" name="category_id">
+                    <option value="">All Categories</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}"
+                            {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group mr-2">
+                <label for="status" class="mr-2">Status:</label>
+                <select class="form-control" id="status" name="status">
+                    <option value="">All Statuses</option>
+                    <option value="to-do" {{ request('status') == 'to-do' ? 'selected' : '' }}>To-Do</option>
+                    <option value="in-progress" {{ request('status') == 'in-progress' ? 'selected' : '' }}>In Progress
+                    </option>
+                    <option value="done" {{ request('status') == 'done' ? 'selected' : '' }}>Done</option>
+                </select>
+            </div>
+            <div class="form-group mr-2">
+                <label for="sort_by" class="mr-2">Sort By:</label>
+                <select class="form-control" id="sort_by" name="sort_by">
+                    <option value="created_at" {{ request('sort_by') == 'created_at' ? 'selected' : '' }}>Creation Date
+                    </option>
+                    <option value="title" {{ request('sort_by') == 'title' ? 'selected' : '' }}>Title</option>
+                </select>
+            </div>
+            <div class="form-group mr-2">
+                <label for="sort_order" class="mr-2">Order:</label>
+                <select class="form-control" id="sort_order" name="sort_order">
+                    <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>Ascending</option>
+                    <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>Descending</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Apply</button>
+        </form>
 
         <div class="row">
             <div class="col-md-12">
@@ -60,7 +102,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $task->title }}</td>
-                                <td>{{ $task->category_id }}</td>
+                                <td>{{ $task->category->name }}</td>
                                 <td>{{ $task->description }}</td>
                                 <td>{{ $task->status }}</td>
                                 <td>{{ $task->created_at->format('Y-m-d') }}</td>
@@ -82,6 +124,7 @@
                         @endforelse
                     </tbody>
                 </table>
+                {{ $tasks->links() }}
             </div>
         </div>
 
